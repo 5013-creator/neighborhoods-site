@@ -1,14 +1,17 @@
 import { supabase } from '../lib/supabase'
 
 export default async function Home() {
-  const { data: neighborhoods } = await supabase
+  const { data: neighborhoods, error } = await supabase
     .from('neighborhoods')
     .select('*')
-    .eq('city', 'Chicago')
+
+  console.log('neighborhoods:', neighborhoods)
+  console.log('error:', error)
 
   return (
     <main>
       <h1>Best Neighborhoods to Stay in Chicago</h1>
+      <p>Count: {neighborhoods?.length}</p>
       {neighborhoods?.map((n) => (
         <div key={n.id}>
           <h2>{n.neighborhood_name}</h2>
