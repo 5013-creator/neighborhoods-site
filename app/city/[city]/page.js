@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '../../../lib/supabase';
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export default function CityPage({ params }) {
   const [neighborhoods, setNeighborhoods] = useState([]);
@@ -12,15 +14,20 @@ export default function CityPage({ params }) {
 
   useEffect(() => {
     async function load() {
-      const resolvedParams = await Promise.resolve(params);
-      const cityName = resolvedParams.city.charAt(0).toUpperCase() + resolvedParams.city.slice(1);
+      const cityName = params.city.charAt(0).toUpperCase() + params.city.slice(1);
       setCity(cityName);
 
-      const { data, error } = await supabase
-        .from('neighborhoods')
-        .select('*')
-        .eq('city', cityName);
-      if (!error) setNeighborhoods(data);
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/neighborhoods?city=eq.${cityName}&select=*`,
+        {
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`,
+          },
+        }
+      );
+      const data = await response.json();
+      setNeighborhoods(data);
     }
     load();
   }, []);
