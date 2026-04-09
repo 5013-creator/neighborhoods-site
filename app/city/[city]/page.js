@@ -6,24 +6,30 @@ import { supabase } from '../../../lib/supabase';
 export default function CityPage({ params }) {
   const [neighborhoods, setNeighborhoods] = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
-  const city = params.city.charAt(0).toUpperCase() + params.city.slice(1);
+  const [city, setCity] = useState('');
 
   const travelerTypes = ['All', 'First-timers', 'Families', 'Couples', 'Nightlife', 'Budget'];
 
   useEffect(() => {
-    async function fetchNeighborhoods() {
+    async function load() {
+      const resolvedParams = await Promise.resolve(params);
+      const cityName = resolvedParams.city.charAt(0).toUpperCase() + resolvedParams.city.slice(1);
+      setCity(cityName);
+
       const { data, error } = await supabase
         .from('neighborhoods')
         .select('*')
-        .eq('city', city);
+        .eq('city', cityName);
       if (!error) setNeighborhoods(data);
     }
-    fetchNeighborhoods();
-  }, [city]);
+    load();
+  }, []);
 
   const filtered = activeFilter === 'All'
     ? neighborhoods
     : neighborhoods.filter(n => n.best_for?.toLowerCase().includes(activeFilter.toLowerCase()));
+
+  if (!city) return <p style={{ padding: '24px', fontFamily: 'sans-serif' }}>Loading...</p>;
 
   return (
     <main style={{ fontFamily: 'sans-serif', maxWidth: '900px', margin: '0 auto', padding: '24px' }}>
