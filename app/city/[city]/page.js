@@ -108,9 +108,7 @@ export default function CityPage({ params }) {
         <p style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '12px' }}>
           Ready to book your stay in {city}?
         </p>
-        
-        <a
-          href={`https://www.booking.com/searchresults.html?ss=${city}`}
+        <a href={`https://www.booking.com/searchresults.html?ss=${city}`}
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -121,8 +119,7 @@ export default function CityPage({ params }) {
             textDecoration: 'none',
             fontWeight: '600',
             fontSize: '1rem'
-          }}
-        >
+          }}>
           See Hotels in {city}
         </a>
       </div>
