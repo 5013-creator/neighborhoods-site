@@ -109,6 +109,7 @@ export default function CityPage({ params }) {
           Ready to book your stay in {city}?
         </p>
         
+        <a
           href={`https://www.booking.com/searchresults.html?ss=${city}`}
           target="_blank"
           rel="noopener noreferrer"
