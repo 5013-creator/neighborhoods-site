@@ -18,7 +18,7 @@ export default function CityPage({ params }) {
       setCity(cityName);
 
       const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/neighborhoods?city=eq.${cityName}&select=*`,
+        `${SUPABASE_URL}/rest/v1/neighborhoods?city=eq.${cityName}&select=*&order=display_order.asc`,
         {
           headers: {
             apikey: SUPABASE_KEY,
